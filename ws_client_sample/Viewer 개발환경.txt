@@ -1,0 +1,30 @@
+=== Viewer 개발 환경 ===
+1. node.js 설치 [https://nodejs.org/en/download/]
+2. cmd 창을 열고, 소스 파일의 "projects/HctAngioAnalysis" 로 진입.
+3. "npm install" 실행
+
+=== 개발용 PC 에서 구동 ===
+1. index.js - getLogFilePath()
+- 마지막 리턴 값을 아래와 같이 변경
+- return __dirname + '\\log.log';
+2. CMainFrame::runAngioAnalysisViewer()
+- electron 실행 코드를 아래와 같이 수정
+- CString szPathDir = _T("D:/projects/oct/src/work/HCT-9000/projects");
+  CString szPathExe = szPathDir + _T("/HctAngioAnalysis/node_modules/.bin/electron");
+  CString szPathApp = szPathDir + _T("/HctAngioAnalysis");
+  ShellExecute(NULL, _T("open"), szPathExe, szPathApp, NULL, SW_SHOWNORMAL);
+
+=== 배포 ===
+1. index.js - getLogFilePath()
+- 마지막 리턴 값을 아래와 같이 변경
+- return pathForApp + 'log\\' + today + '.log';
+2. CMainFrame::runAngioAnalysisViewer()
+- electron 실행 코드를 아래와 같이 수정
+- CString szPath = szCurDir + _T("/angioAnalysis/electron.exe");
+  ShellExecute(NULL, _T("open"), szPath, NULL, NULL, SW_SHOWNORMAL);
+3. cmd 창을 열고, 소스 코드의 "HCT-9000\projects" 폴더로 진입.
+4. asar 설치
+- "npm install asar" 실행
+5. app.asar 구성
+- asar pack HctAngioAnalysis app.asar
+6. 만들어진 app.asar 파일을, 바이너리 폴더 "angioAnalysis\resources"에 복사.
